@@ -1,10 +1,4 @@
-<script>
-export default {
-  props: {
-    show: Boolean
-  }
-}
-</script>
+
 
 <template>
   <Transition name="modal">
@@ -12,24 +6,79 @@ export default {
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header flex justify-between">
-            <slot name="header">default header</slot>
-            <button
-                class="modal-default-button"
-                @click="$emit('close')"
-              >X</button>
+            <h3>Add New Utilities</h3>
+            <button class="modal-default-button" @click="$emit('close')">
+              X
+            </button>
           </div>
           <div class="modal-body">
-            <slot name="body">default body</slot>
+            <div class="flex flex-col gap-2">
+              <div class="grid grid-cols-4 items-center">
+                <label for="" class="">Nama: </label>
+                <input
+                  type="text"
+                  name="name"
+                  v-model="utilities.name"
+                  class="border-b border-gray-400 h-10 p-2 col-span-3"
+                  placeholder="TNB/SYABAS/UNIFI"
+                  required
+                />
+              </div>
+              <div class="grid grid-cols-4 items-center">
+                <label for="">Bill: </label>
+                <input
+                  type="number"
+                  name="value"
+                  v-model="utilities.value"
+                  class="border-b border-gray-400 h-10 p-2 col-span-3"
+                  placeholder="500"
+                  value=""
+                  required
+                />
+              </div>
+            </div>
           </div>
-            <button
-                class="modal-default-button bg-green-400  rounded-md py-2 w-full text-white"
-                @click="$emit('close')"
-              >CONFIRM</button>
+          <button
+            class="modal-default-button bg-green-400 rounded-md py-2 w-full text-white"
+            @click="saveList"
+          >
+            CONFIRM
+          </button>
         </div>
       </div>
     </div>
   </Transition>
 </template>
+
+<script>
+export default {
+  props: {
+    show: Boolean,
+  },
+
+  data() {
+    return {
+      utilities: {
+        name: "",
+        value: 0
+      },
+    };
+  },
+
+  methods:{
+    saveList(){
+      console.log('save list');
+      let tasks = (localStorage.getItem("tasks")) ? JSON.parse(localStorage.getItem("tasks")) : []
+      tasks.push(this.utilities) 
+      localStorage.setItem("tasks", JSON.stringify(tasks)) // Salvando as informações no localstorage
+      this.$emit('close')
+      this.utilities.name = ""
+      this.utilities.value = 0
+      
+    }
+  }
+};
+</script>
 
 <style>
 .modal-mask {
@@ -45,9 +94,9 @@ export default {
 }
 
 .modal-wrapper {
-    display: flex;
-    align-items: center;
-    height: inherit;
+  display: flex;
+  align-items: center;
+  height: inherit;
 }
 
 .modal-container {
