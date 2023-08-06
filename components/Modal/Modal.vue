@@ -67,7 +67,6 @@ export default {
 
   methods:{
     saveList(){
-      console.log('save list');
       let tasks = (localStorage.getItem("tasks")) ? JSON.parse(localStorage.getItem("tasks")) : []
       tasks.push(this.utilities) 
       localStorage.setItem("tasks", JSON.stringify(tasks)) // Salvando as informações no localstorage
